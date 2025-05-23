@@ -12,17 +12,17 @@ public class Message implements Serializable {
     private Date updatedDate;
 
     public int getId() { return id; }
-    public void setId(int id) {this.id = id; }
+    public void setId(int id) { this.id = id; }
 
-    public int getUserIdt() { return userId; }
-    public void setUserId(int userId) {this.userId = userId; }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
     public String getText() { return text; }
-    public void setText(String text) {this.text = text; }
+    public void setText(String text) { this.text = text; }
 
     public Date getCreatedDate() { return createdDate; }
-    public void setCreatedDate(Date createdDate) {this.createdDate = createdDate; }
+    public void setCreatedDate(Date createdDate) { this.createdDate = createdDate; }
 
-    public Date getUpeadatedDate() { return updatedDate; }
-    public void setUpdatedDate(Date updatedDate) {this.updatedDate = updatedDate; }
+    public Date getUpdatedDate() { return updatedDate; }
+    public void setUpdatedDate(Date updatedDate) { this.updatedDate = updatedDate; }
 }
