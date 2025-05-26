@@ -205,15 +205,17 @@ public class UserDao {
 
 			ps = connection.prepareStatement(sql.toString());
 
-			int index = 1;
-			ps.setString(index++, user.getAccount());
-			ps.setString(index++, user.getName());
-			ps.setString(index++, user.getEmail());
+			ps.setString(1, user.getAccount());
+			ps.setString(2, user.getName());
+			ps.setString(3, user.getEmail());
 			if (!StringUtils.isBlank(user.getPassword())) {
-				ps.setString(index++, user.getPassword());
+				ps.setString(4, user.getPassword());
+				ps.setString(5, user.getDescription());
+				ps.setInt(6, user.getId());
+			}else {
+				ps.setString(4, user.getDescription());
+				ps.setInt(5, user.getId());
 			}
-			ps.setString(index++, user.getDescription());
-			ps.setInt(index++, user.getId());
 
 			int count = ps.executeUpdate();
 			if (count == 0) {
