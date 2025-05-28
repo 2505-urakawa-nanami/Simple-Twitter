@@ -34,7 +34,6 @@ public class SettingServlet extends HttpServlet {
 	public SettingServlet() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
-
 	}
 
 	@Override
