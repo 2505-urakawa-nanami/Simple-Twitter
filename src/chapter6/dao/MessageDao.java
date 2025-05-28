@@ -72,7 +72,7 @@ public class MessageDao {
           try {
               StringBuilder sql = new StringBuilder();
               sql.append("DELETE FROM messages ");
-              sql.append("WHERE id = ? ");
+              sql.append("WHERE id = ?");
 
               ps = connection.prepareStatement(sql.toString());
 
