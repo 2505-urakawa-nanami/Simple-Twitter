@@ -63,13 +63,11 @@
 			<c:forEach items="${messages}" var="message">
 				<div class="message">
 					<div class="account-name">
-						<span class="account">
-							<a href="./?user_id=<c:out value="${message.userId}"/> ">
-								<c:out value="${message.account}" />
-							</a>
-						</span>
-						<span class="name">
-							<c:out value="${message.name}" />
+						<span class="account"> <a
+							href="./?user_id=<c:out value="${message.userId}"/> "> <c:out
+									value="${message.account}" />
+						</a>
+						</span> <span class="name"> <c:out value="${message.name}" />
 						</span>
 					</div>
 					<div class="text">
@@ -79,11 +77,16 @@
 						<fmt:formatDate value="${message.createdDate}"
 							pattern="yyyy/MM/dd HH:mm:ss" />
 					</div>
-
 					<c:if test="${ loginUser.id == message.userId}">
 						<form action="deleteMessage" method="post">
-							<input type="hidden" name="message_id" value="${message.id} ">
-							 <input type="submit" value="削除">
+							<input type="hidden" name="message_id" value="${message.id}"/>
+							<input type="submit" value="削除"/>
+						</form>
+					</c:if>
+					<c:if test="${ loginUser.id == message.userId}">
+						<form action="edit" method="get">
+							<input type="hidden" name="message_id" value="${message.id}"/>
+							<input type="submit" value="編集"/>
 						</form>
 					</c:if>
 				</div>
