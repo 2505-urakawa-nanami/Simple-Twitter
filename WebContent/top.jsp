@@ -74,19 +74,26 @@
 						<c:out value="${message.text}" />
 					</div>
 					<div class="date">
-						<fmt:formatDate value="${message.createdDate}"
-							pattern="yyyy/MM/dd HH:mm:ss" />
+						<c:if test="${message.updatedDate == null}">
+							<fmt:formatDate value="${message.createdDate}"
+								pattern="yyyy/MM/dd HH:mm:ss" />
+						</c:if>
+						<c:if test="${message.updatedDate != null}">
+							<fmt:formatDate value="${message.updatedDate}"
+								pattern="yyyy/MM/dd HH:mm:ss" />
+						</c:if>
 					</div>
+
 					<c:if test="${ loginUser.id == message.userId}">
 						<form action="deleteMessage" method="post">
-							<input type="hidden" name="message_id" value="${message.id}"/>
-							<input type="submit" value="削除"/>
+							<input type="hidden" name="message_id" value="${message.id}" />
+							<input type="submit" value="削除" />
 						</form>
 					</c:if>
 					<c:if test="${ loginUser.id == message.userId}">
 						<form action="edit" method="get">
-							<input type="hidden" name="message_id" value="${message.id}"/>
-							<input type="submit" value="編集"/>
+							<input type="hidden" name="message_id" value="${message.id}" />
+							<input type="submit" value="編集" />
 						</form>
 					</c:if>
 				</div>

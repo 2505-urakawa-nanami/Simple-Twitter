@@ -46,17 +46,30 @@ public class EditServlet extends HttpServlet {
 		//編集画面に移動
 		List<String> errorMessages = new ArrayList<String>();
 		String idParameter = request.getParameter("message_id");
-		if (!isValidGet(idParameter, errorMessages)) {
+		if (StringUtils.isBlank(idParameter)) {
+			errorMessages.add("不正なパラメータが入力されました");
 			request.getSession().setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./");
 			return;
 		}
-		int messageId = Integer.parseInt(idParameter);
-		Message message = new MessageService().edit(messageId);
+		if (!idParameter.matches("^[0-9]*+$")) {
+			errorMessages.add("不正なパラメータが入力されました");
+			request.getSession().setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			return;
+		}
+			int messageId = Integer.parseInt(idParameter);
+			Message message = new MessageService().edit(messageId);
+			if (message == null) {
+				errorMessages.add("不正なパラメータが入力されました");
+				request.getSession().setAttribute("errorMessages", errorMessages);
+				response.sendRedirect("./");
+				return;
+			}
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("edit.jsp").forward(request, response);
+		}
 
-		request.setAttribute("message", message);
-		request.getRequestDispatcher("edit.jsp").forward(request, response);
-	}
 
 	//更新処理
 	@Override
@@ -72,7 +85,7 @@ public class EditServlet extends HttpServlet {
 		String text = request.getParameter("text");
 		int messageId = Integer.parseInt(request.getParameter("message_id"));
 
-		if (!isValidPost(text, errorMessages)) {
+		if (!isValid(text, errorMessages)) {
 			request.setAttribute("errorMessages", errorMessages);
 			Message message = new MessageService().edit(messageId);
 			request.setAttribute("message", message);
@@ -83,26 +96,7 @@ public class EditServlet extends HttpServlet {
 		response.sendRedirect("./");
 	}
 
-	private boolean isValidGet(String idParameter, List<String> errorMessages) {
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
-		if (idParameter == null || !idParameter.matches("\\d+")) {
-			errorMessages.add("不正なパラメータが入力されました");
-		}
-		int messageId = Integer.parseInt(idParameter);
-		Message message = new MessageService().edit(messageId);
-		if (message == null) {
-			errorMessages.add("不正なパラメータが入力されました");
-		}
-		if (errorMessages.size() != 0) {
-			return false;
-		}
-		return true;
-	}
-
-	private boolean isValidPost(String text, List<String> errorMessages) {
+	private boolean isValid(String text, List<String> errorMessages) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
