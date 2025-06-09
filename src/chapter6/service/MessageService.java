@@ -121,7 +121,7 @@ public class MessageService {
 		}
 	}
 
-	public Message edit(int messageId) {
+	public Message selectEdit(int messageId) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
 				" : " + new Object() {
@@ -130,7 +130,7 @@ public class MessageService {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			Message messages = new MessageDao().edit(connection, messageId);
+			Message messages = new MessageDao().selectEdit(connection, messageId);
 			commit(connection);
 			return messages;
 		} catch (RuntimeException e) {

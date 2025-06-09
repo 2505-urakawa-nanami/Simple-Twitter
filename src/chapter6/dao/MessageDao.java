@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -93,7 +95,7 @@ public class MessageDao {
 		}
 	}
 
-	public Message edit(Connection connection, int messageId) {
+	public Message selectEdit(Connection connection, int messageId) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -103,19 +105,19 @@ public class MessageDao {
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT ");
-			sql.append("    messages.id as id, ");
-			sql.append("    messages.user_id as user_id, ");
-			sql.append("    messages.text as text, ");
-			sql.append("    messages.created_date as created_date, ");
-			sql.append("    messages.updated_date as updated_date ");
-			sql.append("FROM messages ");
+			sql.append("SELECT * FROM messages ");
 			sql.append("WHERE id = ?");
 
 			ps = connection.prepareStatement(sql.toString());
 			ps.setInt(1, messageId);
 			ResultSet rs = ps.executeQuery();
-			return toMessage(rs);
+
+			List<Message> messages = toMessage(rs);
+			if (messages.isEmpty()) {
+				return null;
+			} else {
+				return messages.get(0);
+			}
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, new Object() {
 			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
@@ -125,12 +127,13 @@ public class MessageDao {
 		}
 	}
 
-	private Message toMessage(ResultSet rs) throws SQLException {
+	private List<Message> toMessage(ResultSet rs) throws SQLException {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
+		List<Message> messages = new ArrayList<Message>();
 		try {
 			while (rs.next()) {
 				Message message = new Message();
@@ -140,12 +143,12 @@ public class MessageDao {
 				message.setCreatedDate(rs.getTimestamp("created_date"));
 				message.setCreatedDate(rs.getTimestamp("updated_date"));
 
-				return message;
+				messages.add(message);
 			}
+			return messages;
 		} finally {
 			close(rs);
 		}
-		return null;
 	}
 
 	public void update(Connection connection, int messageId, String text) {
