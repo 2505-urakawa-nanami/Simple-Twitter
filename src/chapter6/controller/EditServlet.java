@@ -46,7 +46,7 @@ public class EditServlet extends HttpServlet {
 		//編集画面に移動
 		List<String> errorMessages = new ArrayList<String>();
 		String idParameter = request.getParameter("message_id");
-		if (StringUtils.isBlank(idParameter) || !idParameter.matches("^[0-9]*+$")) {
+		if (StringUtils.isBlank(idParameter) || !idParameter.matches("^[0-9]+$")) {
 			errorMessages.add("不正なパラメータが入力されました");
 			request.getSession().setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./");
