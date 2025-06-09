@@ -73,7 +73,7 @@ public class MessageService {
 		try {
 			connection = getConnection();
 			Integer id = null;
-			if(!StringUtils.isEmpty(userId)) {
+			if (!StringUtils.isEmpty(userId)) {
 				id = Integer.parseInt(userId);
 			}
 			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM);
@@ -120,6 +120,7 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
 	public Message edit(int messageId) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -146,6 +147,7 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
 	public void update(int messageId, String text) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +

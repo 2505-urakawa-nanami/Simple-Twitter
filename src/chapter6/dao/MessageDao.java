@@ -15,149 +15,165 @@ import chapter6.logging.InitApplication;
 
 public class MessageDao {
 
+	/**
+	* ロガーインスタンスの生成
+	*/
+	Logger log = Logger.getLogger("twitter");
 
-    /**
-    * ロガーインスタンスの生成
-    */
-    Logger log = Logger.getLogger("twitter");
+	/**
+	* デフォルトコンストラクタ
+	* アプリケーションの初期化を実施する。
+	*/
+	public MessageDao() {
+		InitApplication application = InitApplication.getInstance();
+		application.init();
 
-    /**
-    * デフォルトコンストラクタ
-    * アプリケーションの初期化を実施する。
-    */
-    public MessageDao() {
-        InitApplication application = InitApplication.getInstance();
-        application.init();
+	}
 
-    }
+	public void insert(Connection connection, Message message) {
 
-    public void insert(Connection connection, Message message) {
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-        " : " + new Object(){}.getClass().getEnclosingMethod().getName());
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("INSERT INTO messages ( ");
+			sql.append("    user_id, ");
+			sql.append("    text, ");
+			sql.append("    created_date, ");
+			sql.append("    updated_date ");
+			sql.append(") VALUES ( ");
+			sql.append("    ?, "); // user_id
+			sql.append("    ?, "); // text
+			sql.append("    CURRENT_TIMESTAMP, "); // created_date
+			sql.append("    CURRENT_TIMESTAMP "); // updated_date
+			sql.append(")");
 
-        PreparedStatement ps = null;
-        try {
-            StringBuilder sql = new StringBuilder();
-            sql.append("INSERT INTO messages ( ");
-            sql.append("    user_id, ");
-            sql.append("    text, ");
-            sql.append("    created_date, ");
-            sql.append("    updated_date ");
-            sql.append(") VALUES ( ");
-            sql.append("    ?, ");                  // user_id
-            sql.append("    ?, ");                  // text
-            sql.append("    CURRENT_TIMESTAMP, ");  // created_date
-            sql.append("    CURRENT_TIMESTAMP ");   // updated_date
-            sql.append(")");
+			ps = connection.prepareStatement(sql.toString());
 
-            ps = connection.prepareStatement(sql.toString());
+			ps.setInt(1, message.getUserId());
+			ps.setString(2, message.getText());
 
-            ps.setInt(1, message.getUserId());
-            ps.setString(2, message.getText());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
 
-            ps.executeUpdate();
-        } catch (SQLException e) {
-		log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
-            throw new SQLRuntimeException(e);
-        } finally {
-            close(ps);
-        }
-    }
-    public void delete(Connection connection, int messageId) {
+	public void delete(Connection connection, int messageId) {
 
-  	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-          " : " + new Object(){}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
-          PreparedStatement ps = null;
-          try {
-              StringBuilder sql = new StringBuilder();
-              sql.append("DELETE FROM messages ");
-              sql.append("WHERE id = ?");
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("DELETE FROM messages ");
+			sql.append("WHERE id = ?");
 
-              ps = connection.prepareStatement(sql.toString());
+			ps = connection.prepareStatement(sql.toString());
 
-              ps.setInt(1, messageId);
-              ps.executeUpdate();
-          } catch (SQLException e) {
-  		log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
-              throw new SQLRuntimeException(e);
-          } finally {
-              close(ps);
-          }
-      }
-    public  Message edit(Connection connection, int messageId) {
+			ps.setInt(1, messageId);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
 
-    	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-            " : " + new Object(){}.getClass().getEnclosingMethod().getName());
+	public Message edit(Connection connection, int messageId) {
 
-            PreparedStatement ps = null;
-            try {
-                StringBuilder sql = new StringBuilder();
-                sql.append("SELECT ");
-                sql.append("    messages.id as id, ");
-                sql.append("    messages.user_id as user_id, ");
-                sql.append("    messages.text as text, ");
-                sql.append("    messages.created_date as created_date, ");
-                sql.append("    messages.updated_date as updated_date ");
-                sql.append("FROM messages ");
-                sql.append("WHERE id = ?");
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
-                ps = connection.prepareStatement(sql.toString());
-                ps.setInt(1, messageId);
-                ResultSet rs = ps.executeQuery();
-                return toMessage(rs);
-            } catch (SQLException e) {
-    		log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
-                throw new SQLRuntimeException(e);
-            } finally {
-                close(ps);
-            }
-        }
-    private Message toMessage(ResultSet rs) throws SQLException {
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT ");
+			sql.append("    messages.id as id, ");
+			sql.append("    messages.user_id as user_id, ");
+			sql.append("    messages.text as text, ");
+			sql.append("    messages.created_date as created_date, ");
+			sql.append("    messages.updated_date as updated_date ");
+			sql.append("FROM messages ");
+			sql.append("WHERE id = ?");
 
+			ps = connection.prepareStatement(sql.toString());
+			ps.setInt(1, messageId);
+			ResultSet rs = ps.executeQuery();
+			return toMessage(rs);
+		} catch (SQLException e) {
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
 
-  	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-          " : " + new Object(){}.getClass().getEnclosingMethod().getName());
-          try {
-              while (rs.next()) {
-                  Message message = new Message();
-                  message.setId(rs.getInt("id"));
-                  message.setUserId(rs.getInt("user_id"));
-                  message.setText(rs.getString("text"));
-                  message.setCreatedDate(rs.getTimestamp("created_date"));
-                  message.setCreatedDate(rs.getTimestamp("updated_date"));
+	private Message toMessage(ResultSet rs) throws SQLException {
 
-                  return message;
-              }
-          } finally {
-              close(rs);
-          }
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+		try {
+			while (rs.next()) {
+				Message message = new Message();
+				message.setId(rs.getInt("id"));
+				message.setUserId(rs.getInt("user_id"));
+				message.setText(rs.getString("text"));
+				message.setCreatedDate(rs.getTimestamp("created_date"));
+				message.setCreatedDate(rs.getTimestamp("updated_date"));
+
+				return message;
+			}
+		} finally {
+			close(rs);
+		}
 		return null;
-      }
-    public void update(Connection connection, int messageId, String text) {
+	}
 
-    	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-            " : " + new Object(){}.getClass().getEnclosingMethod().getName());
+	public void update(Connection connection, int messageId, String text) {
 
-            PreparedStatement ps = null;
-            try {
-                StringBuilder sql = new StringBuilder();
-                sql.append("UPDATE messages SET ");
-                sql.append("text = ?,");
-                sql.append("updated_date = CURRENT_TIMESTAMP ");
-                sql.append("WHERE id = ?");
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
-                ps = connection.prepareStatement(sql.toString());
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE messages SET ");
+			sql.append("text = ?,");
+			sql.append("updated_date = CURRENT_TIMESTAMP ");
+			sql.append("WHERE id = ?");
 
-                ps.setString(1, text);
-                ps.setInt(2, messageId);
-                ps.executeUpdate();
-            } catch (SQLException e) {
-    		log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
-                throw new SQLRuntimeException(e);
-            } finally {
-                close(ps);
-            }
-        }
+			ps = connection.prepareStatement(sql.toString());
+
+			ps.setString(1, text);
+			ps.setInt(2, messageId);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
 }

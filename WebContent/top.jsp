@@ -31,7 +31,6 @@
 					</h2>
 				</div>
 				<div class="account">
-					@
 					<c:out value="${loginUser.account}" />
 				</div>
 				<div class="description">
@@ -71,7 +70,7 @@
 						</span>
 					</div>
 					<div class="text">
-						<c:out value="${message.text}" />
+						<pre><c:out value="${message.text}" /></pre>
 					</div>
 					<div class="date">
 						<c:if test="${message.updatedDate == null}">

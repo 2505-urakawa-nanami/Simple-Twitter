@@ -58,18 +58,17 @@ public class EditServlet extends HttpServlet {
 			response.sendRedirect("./");
 			return;
 		}
-			int messageId = Integer.parseInt(idParameter);
-			Message message = new MessageService().edit(messageId);
-			if (message == null) {
-				errorMessages.add("不正なパラメータが入力されました");
-				request.getSession().setAttribute("errorMessages", errorMessages);
-				response.sendRedirect("./");
-				return;
-			}
-			request.setAttribute("message", message);
-			request.getRequestDispatcher("edit.jsp").forward(request, response);
+		int messageId = Integer.parseInt(idParameter);
+		Message message = new MessageService().edit(messageId);
+		if (message == null) {
+			errorMessages.add("不正なパラメータが入力されました");
+			request.getSession().setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			return;
 		}
-
+		request.setAttribute("message", message);
+		request.getRequestDispatcher("edit.jsp").forward(request, response);
+	}
 
 	//更新処理
 	@Override
@@ -104,7 +103,7 @@ public class EditServlet extends HttpServlet {
 				}.getClass().getEnclosingMethod().getName());
 
 		if (StringUtils.isBlank(text)) {
-			errorMessages.add("メッセージを入力してください");
+			errorMessages.add("入力してください");
 		} else if (140 < text.length()) {
 			errorMessages.add("140文字以下で入力してください");
 		}
