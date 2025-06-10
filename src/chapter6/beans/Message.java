@@ -5,24 +5,49 @@ import java.util.Date;
 
 public class Message implements Serializable {
 
-    private int id;
-    private int userId;
-    private String text;
-    private Date createdDate;
-    private Date updatedDate;
+	private int id;
+	private int userId;
+	private String text;
+	private Date createdDate;
+	private Date updatedDate;
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+	public int getId() {
+		return id;
+	}
 
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getText() { return text; }
-    public void setText(String text) { this.text = text; }
+	public int getUserId() {
+		return userId;
+	}
 
-    public Date getCreatedDate() { return createdDate; }
-    public void setCreatedDate(Date createdDate) { this.createdDate = createdDate; }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
-    public Date getUpdatedDate() { return updatedDate; }
-    public void setUpdatedDate(Date updatedDate) { this.updatedDate = updatedDate; }
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
 }

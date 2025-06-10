@@ -24,9 +24,8 @@
 			</c:if>
 		</div>
 		<form action="./" method="get">
-			日付<input type="date" name="start" value="${start}" />～ <input
-				type="date" name="end" value="${end}" /> <input type="submit"
-				value="絞込">
+			日付<input type="date" name="start" value="${start}" />～ <input type="date" name="end" value="${end}" />
+				<input type="submit" value="絞込">
 		</form>
 		<c:if test="${ not empty loginUser }">
 			<div class="profile">
@@ -67,19 +66,20 @@
 			<c:forEach items="${messages}" var="message">
 				<div class="message">
 					<div class="account-name">
-						<span class="account"> <a
-							href="./?user_id=<c:out value="${message.userId}"/> "> <c:out
-									value="${message.account}" />
-						</a>
-						</span> <span class="name"> <c:out value="${message.name}" />
+						<span class="account">
+							<a href="./?user_id=<c:out value="${message.userId}"/> ">
+								<c:out value="${message.account}" />
+							</a>
+						</span>
+						<span class="name">
+							<c:out value="${message.name}" />
 						</span>
 					</div>
 					<div class="text">
 						<pre><c:out value="${message.text}" /></pre>
 					</div>
 					<div class="date">
-						<fmt:formatDate value="${message.updatedDate}"
-							pattern="yyyy/MM/dd HH:mm:ss" />
+						<fmt:formatDate value="${message.updatedDate}" pattern="yyyy/MM/dd HH:mm:ss" />
 					</div>
 					<c:if test="${ loginUser.id == message.userId}">
 						<form action="deleteMessage" method="post">
@@ -95,27 +95,29 @@
 						<c:if test="${ isShowMessageForm }">
 							<form action="comment" method="post">
 								<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
-								<br /> <input type="hidden" name="message_id"
-									value="${message.id}" /> <input type="submit" value="返信">（140文字まで）
+								<br />
+								<input type="hidden" name="message_id" value="${message.id}" />
+								<input type="submit" value="返信">（140文字まで）
 							</form>
 						</c:if>
 						<c:forEach items="${comments}" var="comment">
 							<div class="comment">
 								<c:if test="${ comment.messageId == message.id }">
 									<div class="account-name">
-										<span class="account"> <a
-											href="./?user_id=<c:out value="${comment.userId}"/> "> <c:out
-													value="${comment.account}" />
-										</a>
-										</span> <span class="name"> <c:out value="${comment.name}" />
+										<span class="account">
+											<a href="./?user_id=<c:out value="${comment.userId}"/> ">
+												<c:out value="${comment.account}" />
+											</a>
+										</span>
+										<span class="name">
+											<c:out value="${comment.name}" />
 										</span>
 									</div>
 									<div class="text">
 										<pre><c:out value="${comment.text}" /></pre>
 									</div>
 									<div class="date">
-										<fmt:formatDate value="${comment.updatedDate}"
-											pattern="yyyy/MM/dd HH:mm:ss" />
+										<fmt:formatDate value="${comment.updatedDate}" pattern="yyyy/MM/dd HH:mm:ss" />
 									</div>
 								</c:if>
 							</div>
