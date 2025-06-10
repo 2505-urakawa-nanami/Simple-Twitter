@@ -30,6 +30,7 @@ public class CommentService {
 		application.init();
 
 	}
+
 	public void insert(Comment comment) {
 
 		log.info(new Object() {
@@ -56,7 +57,8 @@ public class CommentService {
 			close(connection);
 		}
 	}
-	public List<UserComment>select(){
+
+	public List<UserComment> select() {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
 				" : " + new Object() {
