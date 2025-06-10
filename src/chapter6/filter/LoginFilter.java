@@ -13,7 +13,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import chapter6.beans.User;
 
@@ -33,8 +32,7 @@ public class LoginFilter implements Filter {
 		} else {
 			List<String> errorMessages = new ArrayList<String>();
 			errorMessages.add("ログインしてください");
-			HttpSession session = request.getSession();
-			session.setAttribute("errorMessages", errorMessages);
+			request.getSession().setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./login");
 			return;
 		}
